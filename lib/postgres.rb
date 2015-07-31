@@ -22,6 +22,18 @@ module Postgres
       dbname = ENV['PSQL_DATABASE'] || nil
       conn = PG.connect(host: host, port: port, password: password, dbname: dbname)
     end
+    schema = <<-EOF
+CREATE TABLE IF NOT EXISTS records
+(
+  id serial NOT NULL,
+  fqdn text,
+  datetime timestamp with time zone,
+  record_type text,
+  record text,
+  CONSTRAINT primary_key PRIMARY KEY (id)
+);
+    EOF
+    conn.exec(schema)
     conn.prepare('insert', 'INSERT INTO records (fqdn, datetime, record_type, record) VALUES ($1, $2, $3, $4)')
     conn.prepare('select', 'SELECT record FROM records r WHERE r.fqdn = $1 AND r.record_type = $2 ORDER BY r.datetime DESC LIMIT 1')
     conn
