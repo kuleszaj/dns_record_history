@@ -1,0 +1,6 @@
+---
+- fqdn: atomicobject.com
+  record_types:
+    - Resolv::DNS::Resource::IN::A
+    - Resolv::DNS::Resource::IN::MX
+    - Resolv::DNS::Resource::IN::NS
